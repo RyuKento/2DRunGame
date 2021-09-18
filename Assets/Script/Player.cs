@@ -12,8 +12,8 @@ public class Player : MonoBehaviour
     public bool isJump =false;
     Rigidbody2D rb2d;
     public float hp;
-    private Animator animCrouch = null;
-    private Animator animJump = null;
+    //private Animator animCrouch = null;
+    //private Animator animJump = null;
     [SerializeField] CapsuleCollider2D　m_collider;
     float m_initialHeight;
     // Start is called before the first frame update
@@ -21,8 +21,8 @@ public class Player : MonoBehaviour
     {
         //RigidBody2Dコンポーネントを取得
         rb2d = GetComponent<Rigidbody2D>();
-        animCrouch = GetComponent<Animator>();
-        animJump = GetComponent<Animator>();
+        //animCrouch = GetComponent<Animator>();
+        //animJump = GetComponent<Animator>();
         m_initialHeight = m_collider.size.y;
     }
 
@@ -53,27 +53,27 @@ public class Player : MonoBehaviour
             //ジャンプを許可する
             isJump = false;
         }
-        if (crouchKey < 0)
+        if (Input.GetButton("crouch"))
         {
-            animCrouch.SetBool("crouch", true);
+            //animCrouch.SetBool("crouch", true);
             Vector2 size = m_collider.size;
             size.y = m_initialHeight / 2;
             m_collider.size = size;
         }
         else
         {
-            animCrouch.SetBool("crouch", false);
+            //animCrouch.SetBool("crouch", false);
             Vector2 size = m_collider.size;
             size.y = m_initialHeight;
             m_collider.size = size;
         }
         if (jumpKey< 0)
         {
-            animJump.SetBool("Jump", true);
+            //animJump.SetBool("Jump", true);
         }
         else
         {
-            animJump.SetBool("Jump", false);
+            //animJump.SetBool("Jump", false);
         }
     }
 
