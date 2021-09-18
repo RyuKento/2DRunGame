@@ -12,8 +12,13 @@ public class Player : MonoBehaviour
     public bool isJump =false;
     Rigidbody2D rb2d;
     public float hp;
+<<<<<<< HEAD
     private Animator animCrouch = null;
     private Animator animJump = null;
+=======
+    //private Animator animCrouch = null;
+    //private Animator animJump = null;
+>>>>>>> Kneto
     [SerializeField] CapsuleCollider2D　m_collider;
     float m_initialHeight;
     // Start is called before the first frame update
@@ -21,8 +26,13 @@ public class Player : MonoBehaviour
     {
         //RigidBody2Dコンポーネントを取得
         rb2d = GetComponent<Rigidbody2D>();
+<<<<<<< HEAD
         animCrouch = GetComponent<Animator>();
         animJump = GetComponent<Animator>();
+=======
+        //animCrouch = GetComponent<Animator>();
+        //animJump = GetComponent<Animator>();
+>>>>>>> Kneto
         m_initialHeight = m_collider.size.y;
     }
 
@@ -53,27 +63,45 @@ public class Player : MonoBehaviour
             //ジャンプを許可する
             isJump = false;
         }
+<<<<<<< HEAD
         if (crouchKey < 0)
         {
             animCrouch.SetBool("crouch", true);
+=======
+        if (Input.GetButton("crouch"))
+        {
+            //animCrouch.SetBool("crouch", true);
+>>>>>>> Kneto
             Vector2 size = m_collider.size;
             size.y = m_initialHeight / 2;
             m_collider.size = size;
         }
         else
         {
+<<<<<<< HEAD
             animCrouch.SetBool("crouch", false);
+=======
+            //animCrouch.SetBool("crouch", false);
+>>>>>>> Kneto
             Vector2 size = m_collider.size;
             size.y = m_initialHeight;
             m_collider.size = size;
         }
         if (jumpKey< 0)
         {
+<<<<<<< HEAD
             animJump.SetBool("Jump", true);
         }
         else
         {
             animJump.SetBool("Jump", false);
+=======
+            //animJump.SetBool("Jump", true);
+        }
+        else
+        {
+            //animJump.SetBool("Jump", false);
+>>>>>>> Kneto
         }
     }
 
