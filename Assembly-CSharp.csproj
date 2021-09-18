@@ -64,7 +64,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Script\FollowCamera.cs" />
     <Compile Include="Assets\Script\Player.cs" />
     <None Include="Assets\Dragon Warrior Files\Read Me.txt" />
     <Reference Include="UnityEngine">
