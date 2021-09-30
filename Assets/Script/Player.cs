@@ -9,11 +9,9 @@ public class Player : MonoBehaviour
     public float jp = 550f,scroll = 10f;
     public const int MAX_JUMP_COUNT = 2;
     public int jumpCount = 0;
-    public bool isJump =false;
+    public bool isJump = false, isInvincible = false;
     Rigidbody2D rb2d;
-    public float hp;
-    //private Animator animCrouch = null;
-    //private Animator animJump = null;
+    public float alpha_Sin;
     [SerializeField] CapsuleCollider2D　m_collider;
     float m_initialHeight;
     // Start is called before the first frame update
@@ -21,26 +19,26 @@ public class Player : MonoBehaviour
     {
         //RigidBody2Dコンポーネントを取得
         rb2d = GetComponent<Rigidbody2D>();
-        //animCrouch = GetComponent<Animator>();
-        //animJump = GetComponent<Animator>();
         m_initialHeight = m_collider.size.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float crouchKey = Input.GetAxis("crouch");
+        //操作入力の取得
         float jumpKey = Input.GetAxis("Jump");
-        //体力を常に低下
-        hp += 0.01f;
+        //alpha値を変化させるための数値を時間参照でとる
+        alpha_Sin = Mathf.Sin(Time.time) / 2 + 0.5f;
         //RigidBody2Dの速度にVector2を設定
         rb2d.velocity = new Vector2(scroll, rb2d.velocity.y);
+
         //スペースキーが押されたときに上限回数ジャンプしていないとき
         if (Input.GetKeyDown(KeyCode.Space)&&jumpCount<MAX_JUMP_COUNT)
         {
             //ジャンプを許可する
             isJump = true;
         }
+
         //ジャンプが許可されているとき
         if (isJump)
         {
@@ -53,37 +51,61 @@ public class Player : MonoBehaviour
             //ジャンプを許可する
             isJump = false;
         }
+        //しゃがみボタンが押されたとき
         if (Input.GetButton("crouch"))
         {
-            //animCrouch.SetBool("crouch", true);
             Vector2 size = m_collider.size;
             size.y = m_initialHeight / 2;
             m_collider.size = size;
         }
+        //離された時
         else
         {
-            //animCrouch.SetBool("crouch", false);
             Vector2 size = m_collider.size;
             size.y = m_initialHeight;
             m_collider.size = size;
         }
-        if (jumpKey< 0)
-        {
-            //animJump.SetBool("Jump", true);
-        }
-        else
-        {
-            //animJump.SetBool("Jump", false);
-        }
     }
-
-    //Playerが地面と衝突したときにジャンプの回数をリセットする
+    //衝突した時、相手オブジェクトのタグによって処理を行う
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Ground")
+        switch (collision.gameObject.tag) 
         {
-            Debug.Log("衝突");
-            jumpCount = 0;  //回数をリセット
+            //Playerが地面と衝突したときにジャンプの回数をリセットする
+            case "Ground":
+                Debug.Log("衝突");
+                jumpCount = 0;  //回数をリセット
+                break;
+            //無敵アイテムを拾ったときに数秒の間、障害物に当たらないようにする
+            case "invincible":
+                Debug.Log("無敵");
+                Destroy(collision.gameObject);
+                StartCoroutine(InvincibleCoroutine());
+                isInvincible = false;
+                Debug.Log("無敵切れ1");
+                break;
+            //障害物に当たったときに無敵時間を作りダメージを与える
+            case "Obstacle":
+                Destroy(collision.gameObject);
+                if (isInvincible == true) 
+                {
+                    Debug.Log("障害物");
+                    StartCoroutine(ObstacleCoroutine());
+                    isInvincible = false;
+                }
+                break;
         }
+    }
+    //無敵アイテムのコルーチン
+    public IEnumerator InvincibleCoroutine()
+    {
+        isInvincible = true;
+        Debug.Log("無敵切れ2");
+        yield return new WaitForSeconds(10f);
+    }
+    //障害物に衝突したときのコルーチン
+    public IEnumerator ObstacleCoroutine() { 
+                isInvincible = true;
+                yield return new WaitForSeconds(3);
     }
 }

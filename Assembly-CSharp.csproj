@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Script\Player.cs" />
-    <None Include="Assets\Dragon Warrior Files\Read Me.txt" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.26f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
